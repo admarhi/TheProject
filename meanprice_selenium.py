@@ -30,7 +30,7 @@ def get_mean_price(url):
 
     return(sum(results)/len(results))
 
-    
+
 
 # url = 'https://www.airbnb.com/s/Warszawa/homes?tab_id=home_tab&refinement_paths%5B%5D=%2Fhomes&flexible_trip_dates%5B%5D=june&flexible_trip_dates%5B%5D=may&flexible_trip_lengths%5B%5D=weekend_trip&date_picker_type=calendar&query=Warszawa&place_id=ChIJAZ-GmmbMHkcR_NPqiCq-8HI&checkin=2022-05-09&checkout=2022-05-15&adults=2&source=structured_search_input_header&search_type=autocomplete_click&_set_bev_on_new_domain=1649331499_MTFjMWRmNTNmN2Yx&locale=en'
 # print(get_mean_price(url))
