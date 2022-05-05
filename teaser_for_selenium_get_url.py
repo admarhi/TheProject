@@ -3,7 +3,7 @@
 # @Author : KAI XING 389862
 # @File : airbnb
 # @Project : Selenium.py
-
+import re
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -28,7 +28,7 @@ url = 'https://www.airbnb.com/?_set_bev_on_new_domain=1651079392_OWRlZTY1NTFhNTg
 
 # Actual program:
 driver.get(url)
-time.sleep(1)
+time.sleep(3)
 #Input Location
 driver.execute_script("window.scrollTo(document.body.scrollHeight,0)")
 
@@ -42,27 +42,44 @@ driver.find_element(By.XPATH,'/html/body/div[5]/div/div/div[1]/div/div/div[1]/di
 
 checkin_date = WebDriverWait(driver, 1).until(EC.visibility_of_element_located((By.XPATH, "//div[@data-testid='datepicker-day-2022-05-20']"))).click()
 
-checkout_date = WebDriverWait(driver, 1).until(EC.visibility_of_element_located((By.XPATH, "//div[@data-testid='datepicker-day-2022-05-28']"))).click()
+checkout_date = WebDriverWait(driver, 1).until(EC.visibility_of_element_located((By.XPATH, "//div[@data-testid='datepicker-day-2022-05-22']"))).click()
 
-driver.find_element(By.CLASS_NAME, value='_1qqq7vb').click()
+driver.find_element(By.XPATH,'/html/body/div[5]/div/div/div[1]/div/div/div[1]/div/div/div/div/div[1]/div/div/div/header/div/div[2]/div/div/div/div[2]/div/div/form/div[2]/div/div[5]/div[1]').click()
 
-#Input persons
-driver.find_element(By.CLASS_NAME, value='_suql0c').click()
+# #Input persons
+
 svg_xpath = "/html/body/div[5]/div/div/div[1]/div/div/div[1]/div/div/div/div/div[1]/div/div/div/header/div/div[2]/div/div/div/div[2]/div/div/form/div[2]/div/div[6]/div/section/div/div/div[1]/div[1]/div[2]/button[2]/span/*[name()='svg']/*[name()='path']"
 element = driver.find_element(by=By.XPATH, value=svg_xpath)
 actions = ActionChains(driver)
 actions.move_to_element(element).click().perform()
 actions.move_to_element(element).click().perform()
 
-#Search
+# #Search
 driver.find_element(By.CLASS_NAME, value='_kaq6tx').click()
 
 city = my_location
-# print url
-url = driver.current_url
+
+scrapyUrl = driver.current_url
 print(city)
-print(url)
-driver.quit()
+print(scrapyUrl)
+
+
+
+def get_mean_price(scrapyUrl):
+    driver.get(scrapyUrl)
+    time.sleep(5)
+    prices = driver.find_elements(By.XPATH, '//span[contains(text(), "total") and @aria-hidden="true"]')
+    results = []
+    for i in prices:
+        x = i.text
+        m = re.findall('[0-9]+', x)
+        n = int(m[0])
+        results.append(n)
+
+    return(sum(results)/len(results))
+
+print(get_mean_price(scrapyUrl))
+
 
 end=time.time()
 print('Running time: %s Seconds'%(end-start))
