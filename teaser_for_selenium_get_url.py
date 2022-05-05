@@ -40,9 +40,9 @@ user_location.send_keys(my_location)
 #Input date
 driver.find_element(By.XPATH,'/html/body/div[5]/div/div/div[1]/div/div/div[1]/div/div/div/div/div[1]/div/div/div/header/div/div[2]/div/div/div/div[2]/div/div/form/div[2]/div/div[3]/div[1]').click()
 
-checkin_date = WebDriverWait(driver, 1).until(EC.visibility_of_element_located((By.XPATH, "//div[@data-testid='datepicker-day-2022-04-29']"))).click()
+checkin_date = WebDriverWait(driver, 1).until(EC.visibility_of_element_located((By.XPATH, "//div[@data-testid='datepicker-day-2022-05-20']"))).click()
 
-checkout_date = WebDriverWait(driver, 1).until(EC.visibility_of_element_located((By.XPATH, "//div[@data-testid='datepicker-day-2022-05-02']"))).click()
+checkout_date = WebDriverWait(driver, 1).until(EC.visibility_of_element_located((By.XPATH, "//div[@data-testid='datepicker-day-2022-05-28']"))).click()
 
 driver.find_element(By.CLASS_NAME, value='_1qqq7vb').click()
 
