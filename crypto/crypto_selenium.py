@@ -4,28 +4,19 @@ from selenium import webdriver
 from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.common.by import By
 
-# Init:
 gecko_path = '/usr/local/bin/geckodriver'
 ser = Service(gecko_path)
-
-# Choose betwee chrome or firefox
-
-# options = webdriver.chrome.options.Options()
 options = webdriver.firefox.options.Options()
 options.headless = True # set to True to disable browse window
-
-# driver = webdriver.Chrome(options = options, service=ser)
 driver = webdriver.Firefox(options = options, service = ser)
-
 
 url = 'https://coinmarketcap.com/'
 driver.get(url)
 time.sleep(3)
 
-# table = driver.find_element_by_xpath('//a[starts-with(@href, "/currencies/")]')
-# links =[]
 links = driver.find_elements(by = By.XPATH, value = '//a[starts-with(@href, "/currencies/")]')
 driver.quit()
+output_data = []
 
 for i in range(len(links)):
     url = links[i].text
@@ -45,3 +36,6 @@ for i in range(len(links)):
     print(change)
     print(marketCap)
     print(volumeTraded)
+    output_data.append([name, value, change, marketCap, volumeTraded])
+
+print(output_data)
