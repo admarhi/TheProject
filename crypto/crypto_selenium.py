@@ -39,7 +39,7 @@ for i in range(len(links)):
     stats = driver.find_elements(by = By.XPATH, value ='//div[@class="statsValue"]')
     marketCap = stats[0].text
     volumeTraded = stats[4].text
-
+    driver.quit()
     print(name)
     print(value)
     print(change)
