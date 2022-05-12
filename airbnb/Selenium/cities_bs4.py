@@ -2,7 +2,9 @@ import pandas as pd
 from bs4 import BeautifulSoup as BS
 from urllib import request
 
-url = 'https://en.wikipedia.org/wiki/List_of_largest_cities'
+# url = 'https://en.wikipedia.org/wiki/List_of_largest_cities'
+url = 'https://coinmarketcap.com/'
+
 html = request.urlopen(url)
 bs = BS(html.read(), 'html.parser')
 
