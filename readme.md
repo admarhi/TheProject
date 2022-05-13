@@ -1,7 +1,8 @@
 # Webscraping Project
 
-Scraper to find the cheapest city on airbnb.com in poland for a given time period.
+Scraper to scrape first 100 cryptocurrencies from coinmarketcap.com and its available trading and value data.
 
-- takes data and number of people as input
-- returns a list of the 5 cheapest cities in Poland for the given period
-- the average price is calculated based on the first 10 results for each city
+- scrapes links to the currencies from the main page
+- scrapes needed information from each link
+- returns the mean and std of the values
+- returns scatterplots comparing different currencies
