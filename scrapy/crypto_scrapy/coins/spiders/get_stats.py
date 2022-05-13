@@ -1,4 +1,5 @@
 import scrapy
+import time
 
 class Values(scrapy.Item):
     currency = scrapy.Field()
@@ -11,7 +12,7 @@ class GetValuesSpider(scrapy.Spider):
     name = 'get_stats'
     allowed_domains = ['coinmarketcap.com']
     try:
-        with open("linkkk.csv", "rt") as f:
+        with open("links.csv", "rt") as f:
             start_urls = [url.strip() for url in f.readlines()][1:]
     except:
         start_urls = []
@@ -28,3 +29,10 @@ class GetValuesSpider(scrapy.Spider):
 
         yield v
 
+    def close(self, reason):
+        start_time = self.crawler.stats.get_value('start_time')
+        finish_time = self.crawler.stats.get_value('finish_time')
+        total = finish_time-start_time
+        with open("times.txt", "a") as f:
+            f.write(str(total)+'\n')
+        print("Total run time: ", total)
