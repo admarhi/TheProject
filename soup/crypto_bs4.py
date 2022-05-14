@@ -11,7 +11,7 @@ limiter = True
 if limiter:
     url = 'https://coinmarketcap.com/'
     r = requests.get(url)
-    bs = BS(r.content)
+    bs = BS(r.content, features="lxml")
     list_curr = bs.find('table').find_all('a', {'href': re.compile('\/currencies\/[a-z]+-*[a-z]+\/$')})
 else:
     urls = ['https://coinmarketcap.com/?page='+str(i) for i in range(100)]
@@ -27,7 +27,7 @@ for url2 in currencies:
     try:
         #print(url2)
         r2 = requests.get(url2)
-        bs2 = BS(r2.content)
+        bs2 = BS(r2.content, features="lxml")
         name = bs2.h2.text # Name of the currency
         value = bs2.find('div', {'class':"priceValue"}).text # Value of the currency (USD)
         marketCap = bs2.find('div', {'class':"statsValue"}).text # Market cap
