@@ -12,6 +12,9 @@ There might be some differences between data scraped with different scrapers, as
 ## Running crawlers - instructions
 
 Both Selenium and Beautiful Soup crawlers should work just by running the appropriate files in the IDE or in command line.
+
+### Running Selenium
+Be sure to have geckodriver installed and adjust the path in line 14 of crypto_selenium.py
 ### Running scrapy spider
 
 #### On Linux
@@ -21,5 +24,12 @@ Both Selenium and Beautiful Soup crawlers should work just by running the approp
 - run "scrapy crawl get_stats -O stats.csv"
 
 #### On Windows
-
+- download the whole "scrapy" folder
+- go to "coins" subfolder loction (cd path/to/folder/coins)
+- run "scrapy crawl get_links -O links.csv" in cmd
+- run "scrapy crawl get_stats -O stats.csv" in cmd
 #### On Mac
+- download the whole "scrapy" folder
+- via terminal, go to "coins" subfolder loction (cd path/to/folder/coins)
+- run "scrapy crawl get_links -O links.csv"
+- run "scrapy crawl get_stats -O stats.csv"
