@@ -3,44 +3,23 @@ import os
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-#input stats and output cleared stats
-filename = os.path.join((os.path.dirname(os.path.abspath(__file__))), 'stats.csv')
-outname = os.path.join((os.path.dirname(os.path.abspath(__file__))), 'out.csv')
-
+filename = os.path.join((os.path.dirname(os.path.abspath(__file__))), 'stats_clear.csv')
 data=pd.read_csv(filename, sep=',')
+#plottable_data = data[data['value']<1000] 
+print(data.columns)
+#plotting 
+plt.figure(figsize=(30,5))
 
-#clearing stats
-data['market_cap'] = data['market_cap'].str.replace(",", "").map(lambda x: x.lstrip('$'))
-data['value'] = data['value'].str.replace(",", "").map(lambda x: str(x).lstrip('$'))
+data['value tresholds'] = pd.cut(data["value"], [0, 10, 500, 5000, 50000], labels=["<10$","10-500$", "500-5000$", ">5000"])
 
-series_volume = []
-for r in data['volume']:
-    r = r.split()[0].lstrip('$').replace(",", "")
-    if 'B' in r:
-        r = float(r.rstrip('B'))
-        r = r*1000000000
-    series_volume.append(r)
-
-data['volume'] = pd.Series(series_volume)
-
-#changing to numbers
-#data['value'] = pd.to_numeric(data['value'])
-data = data.astype({'market_cap': 'float64', 'change': 'float64', 'value': 'float64', 'volume':'float64'})
-data.to_csv(outname, index=False) 
-print(data.dtypes)
-#plottable_data = data[data['value']<1000]
-
-
-#some sketchy plots
-plt.figure(figsize=(20,5))
-plot = sns.scatterplot(data=data, x="currency", y="value")
+plot = sns.scatterplot(data=data, x="currency", y="volume", hue='change', size='value tresholds', sizes={"<10$":10,"10-500$":50, "500-5000$":150, ">5000":300},)#, palette=['turquoise', 'orange','crimson'])
 locs, labels = plt.xticks()
 plt.setp(labels, rotation=90)
 fig = plot.get_figure()
-outplotname = os.path.join((os.path.dirname(os.path.abspath(__file__))), 'out.png')
-fig.savefig(outplotname) 
+outplotname = os.path.join((os.path.dirname(os.path.abspath(__file__))), 'volume, change and value of each currency.png')
+fig.savefig(outplotname, bbox_inches='tight') 
 
-
+'''
 plt.figure(figsize=(20,5))
 plot = sns.scatterplot(data=data, x="currency", y="change")
 locs, labels = plt.xticks()
@@ -49,6 +28,7 @@ fig = plot.get_figure()
 outplotname = os.path.join((os.path.dirname(os.path.abspath(__file__))), 'out2.png')
 fig.savefig(outplotname) 
 
+
 plt.figure(figsize=(20,5))
 plot = sns.scatterplot(data=data, x="currency", y="market_cap")
 locs, labels = plt.xticks()
@@ -56,30 +36,31 @@ plt.setp(labels, rotation=90)
 fig = plot.get_figure()
 outplotname = os.path.join((os.path.dirname(os.path.abspath(__file__))), 'outmc.png')
 fig.savefig(outplotname) 
-
+'''
 
 plt.figure(figsize=(20,20))
 plot = sns.scatterplot(data=data, x="value", y="market_cap")
 locs, labels = plt.xticks()
 plt.setp(labels, rotation=90)
 fig = plot.get_figure()
-outplotname = os.path.join((os.path.dirname(os.path.abspath(__file__))), 'value_mc.png')
-fig.savefig(outplotname) 
+outplotname = os.path.join((os.path.dirname(os.path.abspath(__file__))), 'value vs market cap.png')
+fig.savefig(outplotname, bbox_inches='tight') 
 
 
 #change in value vs (volume traded/marketcap *100)
 data['vol_per_mc100'] = data['volume']/(data['market_cap']*100)
 plt.figure(figsize=(20,20))
-plot = sns.scatterplot(data=data, x="change", y="vol_per_mc100")
+plot = sns.scatterplot(data=data, x="change", y="vol_per_mc100", size="value tresholds", sizes={"<10$":10,"10-500$":50, "500-5000$":150, ">5000":300})
 '''
 #I want to have labels on each point, undone
+#
 for i in range(data.shape[0]):
     plt.text(x=data['change'][i]+0.3,y=data.GA[i]+0.3)
 '''
 locs, labels = plt.xticks()
 plt.setp(labels, rotation=90)
 fig = plot.get_figure()
-outplotname = os.path.join((os.path.dirname(os.path.abspath(__file__))), 'change_vol_per_mc100.png')
+outplotname = os.path.join((os.path.dirname(os.path.abspath(__file__))), 'change_vs_vol_per_mc100.png')
 fig.savefig(outplotname) 
 
 
