@@ -3,19 +3,29 @@ import re
 from urllib import request
 from csv import writer
 import requests
+import time
 
-url = 'https://coinmarketcap.com/'
-r = requests.get(url)
-bs = BS(r.content)
+start_time = time.time()
 
-print(bs)
-list_curr = bs.find('table').find_all('a', {'href': re.compile('\/currencies\/[a-z]+-*[a-z]+\/$')})
+limiter = True
+if limiter:
+    url = 'https://coinmarketcap.com/'
+    r = requests.get(url)
+    bs = BS(r.content)
+    list_curr = bs.find('table').find_all('a', {'href': re.compile('\/currencies\/[a-z]+-*[a-z]+\/$')})
+else:
+    urls = ['https://coinmarketcap.com/?page='+str(i) for i in range(100)]
+    list_curr = []
+    for url in urls:
+        r = requests.get(url)
+        bs = BS(r.content)
+        list_curr.append(bs.find('table').find_all('a', {'href': re.compile('\/currencies\/[a-z]+-*[a-z]+\/$')}))
+
 currencies = ['https://coinmarketcap.com' + curr['href'] for curr in list_curr]
-print(currencies)
 
 for url2 in currencies:
     try:
-        print(url2)
+        #print(url2)
         r2 = requests.get(url2)
         bs2 = BS(r2.content)
         name = bs2.h2.text # Name of the currency
@@ -31,3 +41,9 @@ for url2 in currencies:
     except:
         print(f'Error scraping {url2}')
      
+
+#print difference between current time at the end and start time
+print("RUNTIME --- %s seconds ---" % (time.time() - start_time))
+
+############### RUNTIME --- 22.203864097595215 seconds ---###############
+############### without printing: 17.457253217697144 seconds ############
