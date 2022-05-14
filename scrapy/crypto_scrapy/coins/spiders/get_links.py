@@ -6,7 +6,12 @@ class Link(scrapy.Item):
 class GetLinksSpider(scrapy.Spider):
     name = 'get_links'
     allowed_domains = ['coinmarketcap.com']
-    start_urls = ['http://coinmarketcap.com/']
+    limiter = True
+    if limiter:
+        start_urls = ['https://coinmarketcap.com']
+    else:
+        numpages = 102
+        start_urls = ['https://coinmarketcap.com/?page='+str(i) for i in range(numpages)] 
 
     def parse(self, response):
         xpath = '//a[@class="cmc-link" and re:test(@href, "/currencies/[^/]*/$")]/@href'
@@ -15,3 +20,12 @@ class GetLinksSpider(scrapy.Spider):
             l = Link()
             l['link'] = 'http://coinmarketcap.com' + s.get()
             yield l
+    
+
+    def close(self, reason):
+        start_time = self.crawler.stats.get_value('start_time')
+        finish_time = self.crawler.stats.get_value('finish_time')
+        print("Total run time: ", finish_time-start_time)
+        total = finish_time-start_time
+        with open("times_getlinks.txt", "a") as f:
+            f.write(str(total)+'\n')
